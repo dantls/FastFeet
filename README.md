@@ -15,7 +15,7 @@
 Uma aplicação do zero utilizando o [Express](https://expressjs.com/)
 - Sucrase + Nodemon;
 - ESLint + Prettier + EditorConfig;
-- Sequelize (Utilize PostgreSQL ou MySQL);
+- Sequelize (Utilizando PostgreSQL);
 
 ### **Funcionalidades**
 
