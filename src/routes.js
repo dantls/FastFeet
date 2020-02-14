@@ -8,6 +8,7 @@ import RecipientsController from './app/controllers/RecipientsController';
 import SessionController from './app/controllers/SessionController';
 import CourierController from './app/controllers/CourierController';
 import FileController from './app/controllers/FileController';
+import PackageController from './app/controllers/PackageController';
 import authMiddleware from './app/middlewares/auth';
 
 const routes = new Router();
@@ -31,5 +32,10 @@ routes.post(
   upload.single('file'),
   FileController.store
 );
+
+routes.post('/packages', authMiddleware, PackageController.store);
+routes.get('/packages', authMiddleware, PackageController.index);
+routes.delete('/packages/:id', authMiddleware, PackageController.delete);
+routes.put('/packages/:id', authMiddleware, PackageController.update);
 
 export default routes;

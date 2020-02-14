@@ -1,6 +1,6 @@
 import Sequelize, { Model } from 'sequelize';
 
-class Recipients extends Model {
+class Recipient extends Model {
   static init(sequelize) {
     super.init(
       {
@@ -17,6 +17,10 @@ class Recipients extends Model {
 
     return this;
   }
+
+  static associate(models) {
+    this.hasOne(models.Package, { foreignKey: 'recipient_id' });
+  }
 }
 
-export default Recipients;
+export default Recipient;
