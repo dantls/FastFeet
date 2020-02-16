@@ -19,7 +19,7 @@ class Recipient extends Model {
   }
 
   static associate(models) {
-    this.hasOne(models.Package, { foreignKey: 'recipient_id' });
+    this.hasOne(models.Order, { foreignKey: 'recipient_id' });
   }
 }
 

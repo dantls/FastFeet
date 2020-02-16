@@ -1,6 +1,6 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('couriers', {
+    return queryInterface.createTable('signatures', {
       id: {
         type: Sequelize.INTEGER,
         allowNull: false,
@@ -11,11 +11,12 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      email: {
+      path: {
         type: Sequelize.STRING,
         allowNull: false,
         unique: true,
       },
+
       created_at: {
         type: Sequelize.DATE,
         allowNull: false,
@@ -24,11 +25,10 @@ module.exports = {
         type: Sequelize.DATE,
         allowNull: false,
       },
-      deleted_at: {
-        type: Sequelize.DATE,
-        allowNull: true,
-      },
     });
   },
-  down: queryInterface => queryInterface.dropTable('couriers'),
+
+  down: queryInterface => {
+    return queryInterface.dropTable('signatures');
+  },
 };

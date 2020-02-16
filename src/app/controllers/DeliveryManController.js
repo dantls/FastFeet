@@ -1,8 +1,9 @@
 import * as Yup from 'yup';
-import Courier from '../models/Courier';
+import { Op } from 'sequelize';
+import DeliveryMan from '../models/DeliveryMan';
 import File from '../models/File';
 
-class CourierController {
+class DeliveryManController {
   async store(req, res) {
     const schema = Yup.object().shape({
       name: Yup.string().required(),
@@ -15,18 +16,18 @@ class CourierController {
       return res.status(400).json({ error: 'Validation fails' });
     }
 
-    const courierExists = await Courier.findOne({
+    const deliveryManExists = await DeliveryMan.findOne({
       where: {
         email: req.body.email,
       },
     });
-    if (courierExists) {
-      return res.status(401).json({ error: 'Courier already exists.' });
+    if (deliveryManExists) {
+      return res.status(401).json({ error: 'DeliveryMan already exists.' });
     }
 
-    const courier = await Courier.create(req.body);
+    const deliveryMan = await DeliveryMan.create(req.body);
 
-    return res.json(courier);
+    return res.json(deliveryMan);
   }
 
   async update(req, res) {
@@ -39,40 +40,37 @@ class CourierController {
       return res.status(400).json({ error: 'Validation fails' });
     }
 
-    const courier = await Courier.findByPk(req.params.id);
+    const deliveryMan = await DeliveryMan.findByPk(req.params.id);
 
-    if (!courier) {
-      return res.status(400).json({ error: 'Courier not found.' });
+    if (!deliveryMan) {
+      return res.status(400).json({ error: 'DeliveryMan not found.' });
     }
 
-    const { name, email } = await courier.update(req.body);
+    const { name, email } = await deliveryMan.update(req.body);
 
     return res.json({ name, email });
   }
 
   async delete(req, res) {
-    const courier = await Courier.findOne({
+    const deliveryMan = await DeliveryMan.findOne({
       where: {
         id: req.params.id,
+        deleted_at: null,
       },
     });
-    if (courier.deleted_at !== null) {
-      return res.status(400).json({ error: 'Courier not found.' });
+    if (!deliveryMan) {
+      return res.status(400).json({ error: 'DeliveryMan not found.' });
     }
 
-    if (!courier) {
-      return res.status(400).json({ error: 'Courier not found.' });
-    }
+    deliveryMan.deleted_at = new Date();
 
-    courier.deleted_at = new Date();
+    await deliveryMan.save();
 
-    await courier.save();
-
-    return res.json(courier);
+    return res.json(deliveryMan);
   }
 
   async index(req, res) {
-    const couriers = await Courier.findAll({
+    const deliveryMans = await DeliveryMan.findAll({
       where: {
         deleted_at: null,
       },
@@ -84,8 +82,8 @@ class CourierController {
         },
       ],
     });
-    return res.json(couriers);
+    return res.json(deliveryMans);
   }
 }
 
-export default new CourierController();
+export default new DeliveryManController();
